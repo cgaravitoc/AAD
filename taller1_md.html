@@ -1800,7 +1800,13 @@ el proceso de regularización lasso, son:</p>
 df_coef &lt;- as.data.frame(as.matrix(coef))
 df_coef &lt;- df_coef %&gt;% arrange(desc(s0))
 df_coef$var &lt;- row.names(df_coef)
-df_coef &lt;- df_coef[df_coef$s0 != 0,]</code></pre>
+df_coef &lt;- df_coef[df_coef$s0 != 0,]
+df_coef</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["s0"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["var"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"2.103507e-01","2":"V11","_rn_":"V11"},{"1":"2.102439e-01","2":"V17","_rn_":"V17"},{"1":"2.059587e-01","2":"V7","_rn_":"V7"},{"1":"2.059239e-01","2":"V18","_rn_":"V18"},{"1":"2.055179e-01","2":"V5","_rn_":"V5"},{"1":"2.037647e-01","2":"V15","_rn_":"V15"},{"1":"2.023649e-01","2":"V6","_rn_":"V6"},{"1":"2.013210e-01","2":"V19","_rn_":"V19"},{"1":"1.989793e-01","2":"V10","_rn_":"V10"},{"1":"1.988857e-01","2":"V14","_rn_":"V14"},{"1":"1.986059e-01","2":"V2","_rn_":"V2"},{"1":"1.983865e-01","2":"V3","_rn_":"V3"},{"1":"1.949822e-01","2":"V16","_rn_":"V16"},{"1":"1.949763e-01","2":"V20","_rn_":"V20"},{"1":"1.944494e-01","2":"V4","_rn_":"V4"},{"1":"1.943132e-01","2":"V8","_rn_":"V8"},{"1":"1.927899e-01","2":"V12","_rn_":"V12"},{"1":"1.883395e-01","2":"V1","_rn_":"V1"},{"1":"1.869265e-01","2":"V9","_rn_":"V9"},{"1":"1.855368e-01","2":"V13","_rn_":"V13"},{"1":"3.013073e-03","2":"V1293","_rn_":"V1293"},{"1":"1.572941e-03","2":"V1828","_rn_":"V1828"},{"1":"4.604512e-04","2":"V3763","_rn_":"V3763"},{"1":"2.280012e-17","2":"(Intercept)","_rn_":"(Intercept)"},{"1":"-5.048463e-04","2":"V3917","_rn_":"V3917"},{"1":"-2.290044e-03","2":"V3684","_rn_":"V3684"},{"1":"-5.163334e-03","2":"V220","_rn_":"V220"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <p>Así, generando el grafico de trazas para este conjunto específico de
 variables, se obtiene:</p>
 <pre class="r"><code>list_var &lt;- df_coef$var
