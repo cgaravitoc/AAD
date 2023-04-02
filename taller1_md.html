@@ -1794,7 +1794,7 @@ estimado y un modelo seleccionado.</h2>
 <div id="grafique-las-trazas-de-los-coeficientes-en-función-de-la-penalización-para-el-modelo-ajustado" class="section level2">
 <h2>Grafique las trazas de los coeficientes en función de la
 penalización para el modelo ajustado</h2>
-<p>Observe que los coeficientes que las variables que son relevantes en
+<p>Observe que los coeficientes de las variables que son relevantes en
 el proceso de regularización lasso, son:</p>
 <pre class="r"><code>coef &lt;- predict(fit_lasso_best_full, newx = as.matrix(X), type = &#39;coefficients&#39;)
 df_coef &lt;- as.data.frame(as.matrix(coef))
