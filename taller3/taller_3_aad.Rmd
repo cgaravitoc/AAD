@@ -11,9 +11,7 @@ output:
     highlight: tango
 ---
 
-# Análisis Avanzado de Datos - Taller 2
-
-**Carlos Garavito y Cristhian Zamora**
+# Análisis Avanzado de Datos - Taller 3
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -42,14 +40,29 @@ options(dplyr.summarise.inform = FALSE)
 ```
 
 
-## Problema 2
+## Problema 1 
+Una familia de distribuciones $P_{\theta}$ con $\theta \in \Theta$ pertenece a la familia exponencial de distribuciones si su $f mp/fdp$ puede escribirse como:
 
+$$
+p(x| \eta) = h(x) \exp(\eta(\theta)t(x)-a(\theta))
+$$
+Para funciones reales $h(x)$, $a(\theta)$ y $t(x)$. Muestre que tanto la distribución Bernoulli (utilizada para la regresión logística), la distribución normal (utilizada en la regresión lineal) y la distribución Poisson (utilizada en la regresión Poisson sobre conteos) pertenecen a esta familia de distribuciones.
+
+### Distribución Bernoulli 
+Text here...
+
+### Distribución normal
+Text here...
+
+### Distribución Poisson
+Text here...
+
+## Problema 2
 La Universidad de California Irvine (UCI) tiene un repositorio de datos de ejemplo para el uso de machine learning y aprendizaje estadístico. Uno de los conjuntos de datos es el denominado Heart Disease.
 
 Con el conjunto de datos completo, construya un modelo de regresión logístico con función de enlace logit tomando como respuesta la presencia de la enfermedad cardiaca, use las demás variables como explicativas en el modelo de regresión. Revise las URL dadas para la definición de cada una de las variables y note que debe obtener la variable respuesta categorizando una de las variables del conjunto de datos. Siga los siguientes pasos en la realización del ejercicio:
 
 ### 1. Imputar datos
-
 El conjunto de datos tiene datos perdidos en algunas variables. Estos están notados con un ?. Impute los valores perdidos como la mediana de los datos para las variables correspondientes.
 
 
@@ -154,4 +167,14 @@ Calcule manualmente (como lo vimos en clase, a partir de la tabla de contingenci
 table(datos2$fbs, datos2$heart_disease)
 ```
 
+### Modelo Multivariado
+Text goes here...
+
+### Visualización probabilidades
+Text goes here...
+
+## Problema 3
+El conjunto de datos `AAD-taller03.xlsx` contiene la predicción de incumplimiento de pago de tarjeta de crédito bajo dos modelos logísticos diferentes para un total de 9080 clientes. Se cuenta además con la variable de incumplimiento observada al finalizar el periodo. ¿Cuál de los dos modelos logísticos tiene mayor poder de predicción? Explique con fundamento estadístico su resultado.
+
+Text goes here...
 
