@@ -80,11 +80,11 @@ Luego, expandiendo el binomio del argumento de la función exponencial, se recib
 $$
 \begin{aligned}
   P_{normal} &=  \frac{1}{\sqrt{2 \pi \sigma^2}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
-  P_{normal} &=  \frac{1}{\sigma \sqrt{2 \pi}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
-  P_{normal} &=  \frac{1}{\sqrt{2 \pi}} \exp\left({\log{(\sigma^{-1})}}\right)  \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
-  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) + \frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
-  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{(x^2-2x\mu+\mu^2)}{2\sigma^2}\right)},\\
-  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{x^2}{2\sigma^2} + \frac{x\mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}\right)},\\
+  &=  \frac{1}{\sigma \sqrt{2 \pi}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  &=  \frac{1}{\sqrt{2 \pi}} \exp\left({\log{(\sigma^{-1})}}\right)  \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+   &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) + \frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+   &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{(x^2-2x\mu+\mu^2)}{2\sigma^2}\right)},\\
+   &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{x^2}{2\sigma^2} + \frac{x\mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}\right)},\\
 \end{aligned}
 $$
 reorganizando los términos, 
