@@ -257,5 +257,59 @@ Text goes here...
 ## Problema 3
 El conjunto de datos `AAD-taller03.xlsx` contiene la predicción de incumplimiento de pago de tarjeta de crédito bajo dos modelos logísticos diferentes para un total de 9080 clientes. Se cuenta además con la variable de incumplimiento observada al finalizar el periodo. ¿Cuál de los dos modelos logísticos tiene mayor poder de predicción? Explique con fundamento estadístico su resultado.
 
-Text goes here...
+```{r}
+data_score <- read_excel("AAD-taller03.xlsx", sheet = "Sheet1")
+head(data_score)
+```
+Se validan los valores máximos, mínimos y promedios de ambos score, donde se recibe,
+
+```{r}
+min_score <- c(min(data_score$ScoreLogisticoA), min(data_score$ScoreLogisticoB))
+max_score <- c(max(data_score$ScoreLogisticoA), max(data_score$ScoreLogisticoB))
+mean_score <- c(mean(data_score$ScoreLogisticoA), mean(data_score$ScoreLogisticoB))
+mean_score_class1 <- c(mean(data_score$ScoreLogisticoA[data_score$Incumplimiento == 1]), mean(data_score$ScoreLogisticoB[data_score$Incumplimiento == 1]) )
+mean_score_class0 <- c(mean(data_score$ScoreLogisticoA[data_score$Incumplimiento == 0]), mean(data_score$ScoreLogisticoB[data_score$Incumplimiento == 0]) )
+
+resume_data <- data.frame(Score = c("ScoreLogisticoA", "ScoreLogisticoB"), 
+                          min_score = min_score, 
+                          max_score = max_score, 
+                          mean_score = mean_score, 
+                          mean_score_class1 = mean_score_class1, 
+                          mean_score_class0 = mean_score_class0)
+
+data.frame(t(resume_data))
+
+```
+En la tabla se puede observar que en ambos casos, el score está en el rango $[0,1]$. Además, también se aprecia que el valor promedio de la clase 0 se encuentra por debajo del valor promedio del score total y, de manera análoga, el valor promedio de la clase 1 se encuentra por encima de valor promedio del score total. Así, se evidencia que el valor de activación para la clasificación corresponde al valor promedio de cada caso. En ese orden de ideas, en la tabla de datos original se incluye la variable respuesta de cada score. 
+```{r}
+treshold_A <- mean(data_score$ScoreLogisticoA)
+treshold_B <- mean(data_score$ScoreLogisticoB)
+
+data_score$pred_A <- factor(ifelse(data_score$ScoreLogisticoA > treshold_A, 1, 0))
+data_score$pred_B <- factor(ifelse(data_score$ScoreLogisticoB > treshold_A, 1, 0))
+data_score$Incumplimiento <- factor(data_score$Incumplimiento)
+
+data_score
+```
+Calculando la métricas de rendimiento para el modelo ScoreLogisticoA, se encuentra: 
+
+```{r}
+#Creating confusion matrix
+confusionMatrixA <- caret::confusionMatrix(data=data_score$pred_A, reference = data_score$Incumplimiento, positive = "1")
+
+#Display results 
+confusionMatrixA
+```
+De la misma manera, calculando la métricas de rendimiento para el modelo ScoreLogisticoB, se encuentra: 
+
+```{r}
+#Creating confusion matrix
+confusionMatrixB <- caret::confusionMatrix(data=data_score$pred_B, reference = data_score$Incumplimiento, positive = "1")
+
+#Display results 
+confusionMatrixB
+```
+De esta manera, se puede ver que el modelo ScoreLogisticoA tiene una precisión del 59%, mientras que el ScoreLogisticoB tiene una precisión del 47%. Además, de la lectura de las matrices de confusión, se puede evidenciar que el modelo ScoreLogisticoB predice muy mal la clase 0. Además, debido a que el interés es predecir a aquellos posibles morosos, hay un interés particular en predecir correctamente la clase 1. Luego, si se observa el valor de predicción positivo `Pos Pred Value` en ambos modelos, se puede dar cuenta que el modelo que mejor valor de predicción de la clase positiva es ScoreLogisticoA, con 63%; mientras que ScoreLogisticoA tiene un `Pos Pred Value` de 49%.
+
+Así, el modelo que mejor predice el incumplimiento es el modelo ScoreLogisticoA. 
 

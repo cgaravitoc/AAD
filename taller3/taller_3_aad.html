@@ -2112,7 +2112,145 @@ modelos logísticos diferentes para un total de 9080 clientes. Se cuenta
 además con la variable de incumplimiento observada al finalizar el
 periodo. ¿Cuál de los dos modelos logísticos tiene mayor poder de
 predicción? Explique con fundamento estadístico su resultado.</p>
-<p>Text goes here…</p>
+<pre class="r"><code>data_score &lt;- read_excel(&quot;AAD-taller03.xlsx&quot;, sheet = &quot;Sheet1&quot;)
+head(data_score)</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   Incumplimiento ScoreLogisticoA ScoreLogisticoB
+##            &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+## 1              1           0.138            0.17
+## 2              1           0.122            0.01
+## 3              0           0.118            0.21
+## 4              1           0.116            0.01
+## 5              0           0.111            0.21
+## 6              1           0.105            0.19</code></pre>
+<p>Se validan los valores máximos, mínimos y promedios de ambos score,
+donde se recibe,</p>
+<pre class="r"><code>min_score &lt;- c(min(data_score$ScoreLogisticoA), min(data_score$ScoreLogisticoB))
+max_score &lt;- c(max(data_score$ScoreLogisticoA), max(data_score$ScoreLogisticoB))
+mean_score &lt;- c(mean(data_score$ScoreLogisticoA), mean(data_score$ScoreLogisticoB))
+mean_score_class1 &lt;- c(mean(data_score$ScoreLogisticoA[data_score$Incumplimiento == 1]), mean(data_score$ScoreLogisticoB[data_score$Incumplimiento == 1]) )
+mean_score_class0 &lt;- c(mean(data_score$ScoreLogisticoA[data_score$Incumplimiento == 0]), mean(data_score$ScoreLogisticoB[data_score$Incumplimiento == 0]) )
+
+resume_data &lt;- data.frame(Score = c(&quot;ScoreLogisticoA&quot;, &quot;ScoreLogisticoB&quot;), 
+                          min_score = min_score, 
+                          max_score = max_score, 
+                          mean_score = mean_score, 
+                          mean_score_class1 = mean_score_class1, 
+                          mean_score_class0 = mean_score_class0)
+
+data.frame(t(resume_data))</code></pre>
+<pre><code>##                                X1              X2
+## Score             ScoreLogisticoA ScoreLogisticoB
+## min_score            0.0005014944    0.0100000000
+## max_score               0.1379898       0.2400000
+## mean_score             0.01397984      0.15575330
+## mean_score_class1      0.01635203      0.13446652
+## mean_score_class0      0.01151171      0.17790112</code></pre>
+<p>En la tabla se puede observar que en ambos casos, el score está en el
+rango <span class="math inline">\([0,1]\)</span>. Además, también se
+aprecia que el valor promedio de la clase 0 se encuentra por debajo del
+valor promedio del score total y, de manera análoga, el valor promedio
+de la clase 1 se encuentra por encima de valor promedio del score total.
+Así, se evidencia que el valor de activación para la clasificación
+corresponde al valor promedio de cada caso. En ese orden de ideas, en la
+tabla de datos original se incluye la variable respuesta de cada
+score.</p>
+<pre class="r"><code>treshold_A &lt;- mean(data_score$ScoreLogisticoA)
+treshold_B &lt;- mean(data_score$ScoreLogisticoB)
+
+data_score$pred_A &lt;- factor(ifelse(data_score$ScoreLogisticoA &gt; treshold_A, 1, 0))
+data_score$pred_B &lt;- factor(ifelse(data_score$ScoreLogisticoB &gt; treshold_A, 1, 0))
+data_score$Incumplimiento &lt;- factor(data_score$Incumplimiento)
+
+data_score</code></pre>
+<pre><code>## # A tibble: 9,080 × 5
+##    Incumplimiento ScoreLogisticoA ScoreLogisticoB pred_A pred_B
+##    &lt;fct&gt;                    &lt;dbl&gt;           &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; 
+##  1 1                       0.138             0.17 1      1     
+##  2 1                       0.122             0.01 1      0     
+##  3 0                       0.118             0.21 1      1     
+##  4 1                       0.116             0.01 1      0     
+##  5 0                       0.111             0.21 1      1     
+##  6 1                       0.105             0.19 1      1     
+##  7 1                       0.104             0.14 1      1     
+##  8 1                       0.102             0.01 1      0     
+##  9 0                       0.101             0.19 1      1     
+## 10 1                       0.0991            0.19 1      1     
+## # ℹ 9,070 more rows</code></pre>
+<p>Calculando la métricas de rendimiento para el modelo ScoreLogisticoA,
+se encuentra:</p>
+<pre class="r"><code>#Creating confusion matrix
+confusionMatrixA &lt;- caret::confusionMatrix(data=data_score$pred_A, reference = data_score$Incumplimiento, positive = &quot;1&quot;)
+
+#Display results 
+confusionMatrixA</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    0    1
+##          0 3182 2475
+##          1 1268 2155
+##                                           
+##                Accuracy : 0.5878          
+##                  95% CI : (0.5776, 0.5979)
+##     No Information Rate : 0.5099          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.1796          
+##                                           
+##  Mcnemar&#39;s Test P-Value : &lt; 2.2e-16       
+##                                           
+##             Sensitivity : 0.4654          
+##             Specificity : 0.7151          
+##          Pos Pred Value : 0.6296          
+##          Neg Pred Value : 0.5625          
+##              Prevalence : 0.5099          
+##          Detection Rate : 0.2373          
+##    Detection Prevalence : 0.3770          
+##       Balanced Accuracy : 0.5902          
+##                                           
+##        &#39;Positive&#39; Class : 1               
+## </code></pre>
+<p>De la misma manera, calculando la métricas de rendimiento para el
+modelo ScoreLogisticoB, se encuentra:</p>
+<pre class="r"><code>#Creating confusion matrix
+confusionMatrixB &lt;- caret::confusionMatrix(data=data_score$pred_B, reference = data_score$Incumplimiento, positive = &quot;1&quot;)
+
+#Display results 
+confusionMatrixB</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    0    1
+##          0   54  364
+##          1 4396 4266
+##                                           
+##                Accuracy : 0.4758          
+##                  95% CI : (0.4655, 0.4861)
+##     No Information Rate : 0.5099          
+##     P-Value [Acc &gt; NIR] : 1               
+##                                           
+##                   Kappa : -0.0677         
+##                                           
+##  Mcnemar&#39;s Test P-Value : &lt;2e-16          
+##                                           
+##             Sensitivity : 0.92138         
+##             Specificity : 0.01213         
+##          Pos Pred Value : 0.49250         
+##          Neg Pred Value : 0.12919         
+##              Prevalence : 0.50991         
+##          Detection Rate : 0.46982         
+##    Detection Prevalence : 0.95396         
+##       Balanced Accuracy : 0.46676         
+##                                           
+##        &#39;Positive&#39; Class : 1               
+## </code></pre>
+<p>De esta manera, se puede ver que el modelo ScoreLogisticoA tiene una
+precisión del 59%, mientras que el ScoreLogisticoB tiene una precisión
+del 47%. Además, de la lectura de las matrices de confusión, se puede
+evidenciar que el modelo ScoreLogisticoB predice muy mal la clase 0.
+Así, el modelo que mejor predice el incumplimiento es el modelo
+ScoreLogisticoA.</p>
 </div>
 </div>
 </div>
