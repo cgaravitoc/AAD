@@ -130,8 +130,8 @@ Luego, sacando provecho de la propiedad inversa entre la función exponencial y 
 $$
 \begin{aligned}
   P_{poisson} &= \frac{\lambda^x \exp{(-\lambda)}}{x!}, \\ 
-  P_{poisson} &= \frac{\exp\left(x\log(\lambda)\right) \exp{(-\lambda)}}{x!}, \\
-  P_{poisson} &= \frac{1}{x!} \exp\left(x \log(\lambda) -\lambda \right).
+   &= \frac{\exp\left(x\log(\lambda)\right) \exp{(-\lambda)}}{x!}, \\
+   &= \frac{1}{x!} \exp\left(x \log(\lambda) -\lambda \right).
 \end{aligned}
 $$
 Luego, si $h(x) = \frac{1}{x!}$, $\eta(\theta) = log(\lambda)$, $t(x) = x$ y $\alpha(\theta) = \lambda$, se da cuenta que la distribución de Poisson hace parte de la familia de distribuciones exponencial. 
