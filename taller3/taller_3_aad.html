@@ -2089,19 +2089,125 @@ contingencia), los parámetros estimados de regresión logística
 considerando únicamente la variable fbs (glucemia en ayunas) y la
 variable respuesta. Verifique el resultado ajustando el glm
 correspondiente.</p>
-<pre class="r"><code>table(datos2$fbs, datos2$heart_disease)</code></pre>
+<pre class="r"><code>tbl1 &lt;- table(datos2$fbs, datos2$heart_disease)
+print(tbl1)</code></pre>
 <pre><code>##        
 ##         disease no disease
 ##   false     117        141
 ##   true       22         23</code></pre>
+<pre class="r"><code>cat(&#39;Dado que fbs=false el odds de tener enfermedad es de: &#39;, tbl1[1,1]/tbl1[1,2], &#39; ,y log odds de: &#39;, log(tbl1[1,1]/tbl1[1,2]))</code></pre>
+<pre><code>## Dado que fbs=false el odds de tener enfermedad es de:  0.8297872  ,y log odds de:  -0.186586</code></pre>
+<pre class="r"><code>cat(&#39;Dado que fbs=true el odds de tener enfermedad es de: &#39;, tbl1[2,1]/tbl1[2,2], &#39; ,y log odds de: &#39;, log(tbl1[2,1]/tbl1[2,2]))</code></pre>
+<pre><code>## Dado que fbs=true el odds de tener enfermedad es de:  0.9565217  ,y log odds de:  -0.04445176</code></pre>
+<pre class="r"><code>cat(&#39;Con lo cual odds ratio es igual a: &#39;, (tbl1[1,1]/tbl1[1,2])/(tbl1[2,1]/tbl1[2,2]))</code></pre>
+<pre><code>## Con lo cual odds ratio es igual a:  0.8675048</code></pre>
+<pre class="r"><code>cat(&#39;Por otra parte se puede encontrar el log(odds ratio): &#39;, log(tbl1[1,1]/tbl1[1,2])-log(tbl1[2,1]/tbl1[2,2]))</code></pre>
+<pre><code>## Por otra parte se puede encontrar el log(odds ratio):  -0.1421342</code></pre>
+<p>Recordemos que:</p>
+<ul>
+<li><p>Si odds ratio ∈ (0, 1) - Entre menor sea el odds ratio, menor
+’’riesgo” de reprobar - factor de protección.</p></li>
+<li><p>Si odds ratio ∈ (1, ∞) - Entre mayor sea el odds ratio, mayor
+’’riesgo” de reprobar - factor de riesgo.</p></li>
+<li><p>A medida que el odds ratio se acerca a 1, la covariable no es
+buena predictora: da lo mismo en términos del odds de reprobar.</p></li>
+</ul>
+<p>Por lo tanto, en este punto parece que la varaible no será buena
+predictora.</p>
+<p>Al ajustar el modelo mediaante glm se obtiene lo siguiente:</p>
+<pre class="r"><code>logistic_model &lt;- glm(V14 ~ V6, data=datos, family=binomial)
+summary(logistic_model)$coefficients</code></pre>
+<pre><code>##               Estimate Std. Error    z value  Pr(&gt;|z|)
+## (Intercept) -0.1865860  0.1250563 -1.4920153 0.1356951
+## V6           0.1421342  0.3233758  0.4395326 0.6602757</code></pre>
+<p>En donde podemos evidencia que el modelo ajustado es igual a :</p>
+<p><span class="math display">\[\begin{equation}
+logit(\pi(x))=\left\{\begin{matrix}
+-0.1865=log(117/141) &amp;, si x=0 \\
+-0.1865 + (-0.142) = log(117/141) - log(22/23) &amp;, si x=1
+\end{matrix}\right.
+\end{equation}\]</span></p>
 </div>
 <div id="modelo-multivariado" class="section level3">
-<h3>Modelo Multivariado</h3>
-<p>Text goes here…</p>
+<h3>4. Modelo multivariado</h3>
+<p>Ajuste un nuevo modelo con todas las variables. ¿cuáles variables son
+significativas mediante el test de Wald? ¿cuáles no lo son?.</p>
+<pre class="r"><code>logistic_model &lt;- glm(V14 ~ ., data=datos, family=binomial)
+summary(logistic_model)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = V14 ~ ., family = binomial, data = datos)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.7283  -0.5330  -0.1919   0.4276   2.3551  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -7.551087   2.857180  -2.643 0.008221 ** 
+## V1          -0.014491   0.023877  -0.607 0.543921    
+## V2           1.371145   0.488398   2.807 0.004994 ** 
+## V3           0.611789   0.190567   3.210 0.001326 ** 
+## V4           0.023837   0.010710   2.226 0.026028 *  
+## V5           0.005030   0.003767   1.335 0.181740    
+## V6          -0.777545   0.529833  -1.468 0.142232    
+## V7           0.235034   0.182607   1.287 0.198059    
+## V8          -0.020028   0.010158  -1.972 0.048651 *  
+## V9           1.032238   0.409469   2.521 0.011705 *  
+## V10          0.243988   0.210239   1.161 0.245835    
+## V11          0.591238   0.359671   1.644 0.100211    
+## V12          1.237096   0.262772   4.708  2.5e-06 ***
+## V13          0.324359   0.098555   3.291 0.000998 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 417.98  on 302  degrees of freedom
+## Residual deviance: 209.02  on 289  degrees of freedom
+## AIC: 237.02
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>R de forma predeterminada utiliza la prueba de Wald en la tabla de
+resumen para un MODELO lineal generalizado.R informa el estadístico de
+Wald z, con base en los p-values obtenidos en el modelo podemos decir
+que:</p>
+<ul>
+<li>La varaibles significativas para en el modelo fueron: v2(genero),
+V3(chest_pain_type), V4(esting blood pressure), V8(maximum heart rate
+achieved), V9(exercise_induced_angina), V12(num_major_vessels)
+V13(thal)</li>
+</ul>
+<p>Todas las demas varaibles resultaron no significativas. Cabe destacar
+que la varaible V6(fbs) tal como se supuso anteriormente en el cálculo
+manual del modelo bivariado resultó no significativa.</p>
 </div>
-<div id="visualización-probabilidades" class="section level3">
-<h3>Visualización probabilidades</h3>
-<p>Text goes here…</p>
+<div id="visualización-de-probabilidades-predichas-bajo-modelo-multivariado" class="section level3">
+<h3>5. Visualización de probabilidades predichas bajo modelo
+multivariado</h3>
+<p>Usando el modelo del punto anterior, encuentre las probabilidades de
+presentar enfermedad cardiaca y visualicelas junto a la variable
+respuesta. ¿Describe el modelo la presencia de enfermedad cardiaca?.</p>
+<pre class="r"><code>predicciones &lt;- ifelse(test = logistic_model$fitted.values &gt; 0.5, yes = 1, no = 0)
+
+matriz_confusion &lt;- table(logistic_model$model$V14, predicciones,
+                          dnn = c(&quot;observaciones&quot;, &quot;predicciones&quot;))
+matriz_confusion</code></pre>
+<pre><code>##              predicciones
+## observaciones   0   1
+##             0 144  20
+##             1  28 111</code></pre>
+<pre class="r"><code>library(vcd)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;vcd&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ISLR2&#39;:
+## 
+##     Hitters</code></pre>
+<pre class="r"><code>mosaic(matriz_confusion, shade = T, colorize = T,
+       gp = gpar(fill = matrix(c(&quot;green3&quot;, &quot;red2&quot;, &quot;red2&quot;, &quot;green3&quot;), 2, 2)))</code></pre>
+<p><img src="data:image/png;base64,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jgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4AkB/AlCTTeIIAP0JQE02iSMA9CcANdkkjgDQnwDUZJM4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kAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMIgYv+AAAAhvSURBVCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGSTOALAkAQgkE3iCABDEoBANokjAAxJAALZJI4AMCQBCGST6/bqwewqH333tj8gAAxJAALZ5LoJAEwEIJBNrt3xQwEAAUhkk+s3fzKb3X//mwsAQxKAQDbpYCrA4/e+tQAwJAEIZJMeXj34jYd83iQADEkAAtmki6N/4UEgAWBIAhDIJl3Mn7z/jwACwJAEIJBN+ni5v/+/3vOmAsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iSMADEkAAtkkjgAwJAEIZJM4AsCQBCCQTeIIAEMSgEA2iTOLk/y1sUVu7i8Vb2GTODf9t/Sy5K+NLXJzf6l4C5sAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBRAgBQlAAAFCUAAEUJAEBR/x/ne7ZrpzwX3QAAAABJRU5ErkJggg==" width="768" />
+Se observa que el modelo logra un buen rendimiento, en terminos de
+presición logra un 84.2%.</p>
 </div>
 </div>
 <div id="problema-3" class="section level2">
