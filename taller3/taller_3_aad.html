@@ -1847,8 +1847,7 @@ Garavito y Cristhian Zamora
 <div id="problema-1" class="section level2">
 <h2>Problema 1</h2>
 <p>Una familia de distribuciones <span class="math inline">\(P_{\theta}\)</span> con <span class="math inline">\(\theta \in \Theta\)</span> pertenece a la familia
-exponencial de distribuciones si su <span class="math inline">\(f
-mp/fdp\)</span> puede escribirse como:</p>
+exponencial de distribuciones si su <span class="math inline">\(fmp/fdp\)</span> puede escribirse como:</p>
 <p><span class="math display">\[
 p(x| \eta) = h(x) \exp(\eta(\theta)t(x)-a(\theta))
 \]</span> Para funciones reales <span class="math inline">\(h(x)\)</span>, <span class="math inline">\(a(\theta)\)</span> y <span class="math inline">\(t(x)\)</span>. Muestre que tanto la distribución
@@ -1858,15 +1857,106 @@ normal (utilizada en la regresión lineal) y la distribución Poisson
 familia de distribuciones.</p>
 <div id="distribución-bernoulli" class="section level3">
 <h3>Distribución Bernoulli</h3>
-<p>Text here…</p>
+<p>La función de masa de probabilidad de la distribución Bernoulli está
+dada por:</p>
+<p><span class="math display">\[
+P_{Bernoulli}(x) = p^n (1-p)^{1-n}.
+\]</span> Luego, sacando provecho de la propiedad inversa de la función
+exponencial y la función logaritmo, se tiene:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  P_{Bernoulli} &amp; = \alpha^x (1-\alpha)^{1-x}, \\
+    &amp; = \exp\left\{log\left[ \alpha^x
+(1-\alpha)^{1-x}\right]\right\}, \\
+    &amp; = \exp\left\{log(\alpha^x) + log[(1-x)^{1-x}]\right\}, \\
+    &amp; = \exp\left\{x\cdot log(\alpha) + (1-x) \cdot
+log(1-\alpha)\right\}, \\
+    &amp; = \exp\left\{x\cdot log(\alpha)+ log(1-\alpha) - x\cdot
+log(1-\alpha)\right\}, \\
+    &amp; = \exp\left\{x [log(\alpha) - log(1-\alpha)] + log(1-\alpha)
+\right\},\\
+    &amp; = \exp\left\{x \cdot log\left( \frac{\alpha}{1-\alpha} \right)
++ log(1-\alpha) \right\};
+\end{aligned}
+\]</span> donde, haciendo <span class="math inline">\(h(x) = 1\)</span>,
+<span class="math inline">\(\eta(\theta) = log\left(
+\frac{\alpha}{1-\alpha} \right)\)</span>, <span class="math inline">\(t(x) = x\)</span> y <span class="math inline">\(a(\theta) = log(1-\alpha)\)</span>, se muestra que
+la distribución normal es una familia de distribución exponencial.</p>
 </div>
 <div id="distribución-normal" class="section level3">
 <h3>Distribución normal</h3>
-<p>Text here…</p>
+<p>La función de densidad para una distribución normal, se define
+como:</p>
+<p>$$ P_{normal} = . \</p>
+<p>$$ Luego, expandiendo el binomio del argumento de la función
+exponencial, se recibe:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  P_{normal} &amp;=  \frac{1}{\sqrt{2 \pi \sigma^2}}
+\exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &amp;=  \frac{1}{\sigma \sqrt{2 \pi}}
+\exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &amp;=  \frac{1}{\sqrt{2 \pi}}
+\exp\left({\log{(\sigma^{-1})}}\right)  \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &amp;= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) +
+\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &amp;= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) -
+\frac{(x^2-2x\mu+\mu^2)}{2\sigma^2}\right)},\\
+  P_{normal} &amp;= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) -
+\frac{x^2}{2\sigma^2} + \frac{x\mu}{\sigma^2} -
+\frac{\mu^2}{2\sigma^2}\right)},\\
+\end{aligned}
+\]</span> reorganizando los términos,</p>
+<p><span class="math display">\[
+\begin{aligned}
+  P_{normal} &amp;= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) -
+\frac{\mu^2}{2\sigma^2} -  \frac{x^2}{2\sigma^2} + \frac{x\mu}{\sigma^2}
+\right)}, \\
+\end{aligned}
+\]</span> y escribiendo en notación matricial se tiene: <span class="math display">\[
+  \begin{aligned}
+  P_{normal} &amp;= \frac{1}{\sqrt{2 \pi}}
+\exp{\left(\boldsymbol{t(x)}^T\boldsymbol{\eta(\theta)} -\alpha(\theta)
+\right)}, \\
+\end{aligned}
+\]</span> donde,</p>
+<p><span class="math display">\[\begin{equation}
+t(x) = \begin{bmatrix}
+  x \\
+  x^2
+\end{bmatrix},
+\eta(\theta) = \begin{bmatrix}
+  \frac{\mu}{\sigma^2} \\
+  -\frac{1}{2\sigma^2}
+\end{bmatrix},
+\alpha(\theta) = \log(\sigma) + \frac{\mu^2}{2\sigma^2}, \quad
+h(x) = \frac{1}{\sqrt{2\pi}}.
+\end{equation}\]</span></p>
 </div>
 <div id="distribución-poisson" class="section level3">
 <h3>Distribución Poisson</h3>
-<p>Text here…</p>
+<p>La función de masa probabilidad para la distribución de Poisson, se
+escribe de la forma:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  P_{poisson} &amp;= \frac{\lambda^x \exp{(-\lambda)}}{x!}.
+\end{aligned}
+\]</span> Luego, sacando provecho de la propiedad inversa entre la
+función exponencial y logaritmo, se tiene:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  P_{poisson} &amp;= \frac{\lambda^x \exp{(-\lambda)}}{x!}, \\
+  P_{poisson} &amp;= \frac{\exp\left(x\log(\lambda)\right)
+\exp{(-\lambda)}}{x!}, \\
+  P_{poisson} &amp;= \frac{1}{x!} \exp\left(x \log(\lambda) -\lambda
+\right).
+\end{aligned}
+\]</span> Luego, si <span class="math inline">\(h(x) =
+\frac{1}{x!}\)</span>, <span class="math inline">\(\eta(\theta) =
+log(\lambda)\)</span>, <span class="math inline">\(t(x) = x\)</span> y
+<span class="math inline">\(\alpha(\theta) = \lambda\)</span>, se da
+cuenta que la distribución de Poisson hace parte de la familia de
+distribuciones exponencial.</p>
 </div>
 </div>
 <div id="problema-2" class="section level2">

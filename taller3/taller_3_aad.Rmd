@@ -41,7 +41,7 @@ options(dplyr.summarise.inform = FALSE)
 
 
 ## Problema 1 
-Una familia de distribuciones $P_{\theta}$ con $\theta \in \Theta$ pertenece a la familia exponencial de distribuciones si su $f mp/fdp$ puede escribirse como:
+Una familia de distribuciones $P_{\theta}$ con $\theta \in \Theta$ pertenece a la familia exponencial de distribuciones si su $fmp/fdp$ puede escribirse como:
 
 $$
 p(x| \eta) = h(x) \exp(\eta(\theta)t(x)-a(\theta))
@@ -49,13 +49,94 @@ $$
 Para funciones reales $h(x)$, $a(\theta)$ y $t(x)$. Muestre que tanto la distribución Bernoulli (utilizada para la regresión logística), la distribución normal (utilizada en la regresión lineal) y la distribución Poisson (utilizada en la regresión Poisson sobre conteos) pertenecen a esta familia de distribuciones.
 
 ### Distribución Bernoulli 
-Text here...
+La función de masa de probabilidad de la distribución Bernoulli está dada por: 
+
+$$
+P_{Bernoulli}(x) = p^n (1-p)^{1-n}.
+$$
+Luego, sacando provecho de la propiedad inversa de la función exponencial y la función logaritmo, se tiene: 
+
+$$
+\begin{aligned}
+  P_{Bernoulli} & = \alpha^x (1-\alpha)^{1-x}, \\
+    & = \exp\left\{log\left[ \alpha^x (1-\alpha)^{1-x}\right]\right\}, \\
+    & = \exp\left\{log(\alpha^x) + log[(1-x)^{1-x}]\right\}, \\
+    & = \exp\left\{x\cdot log(\alpha) + (1-x) \cdot log(1-\alpha)\right\}, \\
+    & = \exp\left\{x\cdot log(\alpha)+ log(1-\alpha) - x\cdot log(1-\alpha)\right\}, \\
+    & = \exp\left\{x [log(\alpha) - log(1-\alpha)] + log(1-\alpha) \right\},\\
+    & = \exp\left\{x \cdot log\left( \frac{\alpha}{1-\alpha} \right) + log(1-\alpha) \right\};
+\end{aligned}
+$$
+donde, haciendo $h(x) = 1$, $\eta(\theta) = log\left( \frac{\alpha}{1-\alpha} \right)$, $t(x) = x$ y $a(\theta) = log(1-\alpha)$, se muestra que la distribución normal es una familia de distribución exponencial. 
 
 ### Distribución normal
-Text here...
+La función de densidad para una distribución normal, se define como: 
+
+$$
+  P_{normal} = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)}. \\
+  
+$$
+Luego, expandiendo el binomio del argumento de la función exponencial, se recibe: 
+
+$$
+\begin{aligned}
+  P_{normal} &=  \frac{1}{\sqrt{2 \pi \sigma^2}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &=  \frac{1}{\sigma \sqrt{2 \pi}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &=  \frac{1}{\sqrt{2 \pi}} \exp\left({\log{(\sigma^{-1})}}\right)  \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) + \frac{-(x-\mu)^2}{2\sigma^2}\right)},\\
+  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{(x^2-2x\mu+\mu^2)}{2\sigma^2}\right)},\\
+  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{x^2}{2\sigma^2} + \frac{x\mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}\right)},\\
+\end{aligned}
+$$
+reorganizando los términos, 
+
+$$
+\begin{aligned}
+  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(-\log(\sigma) - \frac{\mu^2}{2\sigma^2} -  \frac{x^2}{2\sigma^2} + \frac{x\mu}{\sigma^2} \right)}, \\ 
+\end{aligned}
+$$
+y escribiendo en notación matricial se tiene: 
+$$
+  \begin{aligned}
+  P_{normal} &= \frac{1}{\sqrt{2 \pi}} \exp{\left(\boldsymbol{t(x)}^T\boldsymbol{\eta(\theta)} -\alpha(\theta) \right)}, \\ 
+\end{aligned}
+$$
+donde,
+
+
+\begin{equation}
+t(x) = \begin{bmatrix}
+  x \\
+  x^2
+\end{bmatrix},
+\eta(\theta) = \begin{bmatrix}
+  \frac{\mu}{\sigma^2} \\
+  -\frac{1}{2\sigma^2}
+\end{bmatrix}, 
+\alpha(\theta) = \log(\sigma) + \frac{\mu^2}{2\sigma^2}, \quad
+h(x) = \frac{1}{\sqrt{2\pi}}.
+\end{equation}
+
 
 ### Distribución Poisson
-Text here...
+La función de masa probabilidad para la distribución de Poisson, se escribe de la forma: 
+
+$$
+\begin{aligned}
+  P_{poisson} &= \frac{\lambda^x \exp{(-\lambda)}}{x!}.
+\end{aligned}
+$$
+Luego, sacando provecho de la propiedad inversa entre la función exponencial y logaritmo, se tiene: 
+
+$$
+\begin{aligned}
+  P_{poisson} &= \frac{\lambda^x \exp{(-\lambda)}}{x!}, \\ 
+  P_{poisson} &= \frac{\exp\left(x\log(\lambda)\right) \exp{(-\lambda)}}{x!}, \\
+  P_{poisson} &= \frac{1}{x!} \exp\left(x \log(\lambda) -\lambda \right).
+\end{aligned}
+$$
+Luego, si $h(x) = \frac{1}{x!}$, $\eta(\theta) = log(\lambda)$, $t(x) = x$ y $\alpha(\theta) = \lambda$, se da cuenta que la distribución de Poisson hace parte de la familia de distribuciones exponencial. 
+
 
 ## Problema 2
 La Universidad de California Irvine (UCI) tiene un repositorio de datos de ejemplo para el uso de machine learning y aprendizaje estadístico. Uno de los conjuntos de datos es el denominado Heart Disease.
