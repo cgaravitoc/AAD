@@ -73,8 +73,7 @@ donde, haciendo $h(x) = 1$, $\eta(\theta) = log\left( \frac{\alpha}{1-\alpha} \r
 La función de densidad para una distribución normal, se define como: 
 
 $$
-  P_{normal} = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)}. \\
-  
+P_{normal} = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp{\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)}.
 $$
 Luego, expandiendo el binomio del argumento de la función exponencial, se recibe: 
 
