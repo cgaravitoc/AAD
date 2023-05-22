@@ -2249,7 +2249,14 @@ confusionMatrixB</code></pre>
 precisión del 59%, mientras que el ScoreLogisticoB tiene una precisión
 del 47%. Además, de la lectura de las matrices de confusión, se puede
 evidenciar que el modelo ScoreLogisticoB predice muy mal la clase 0.
-Así, el modelo que mejor predice el incumplimiento es el modelo
+Además, debido a que el interés es predecir a aquellos posibles morosos,
+hay un interés particular en predecir correctamente la clase 1. Luego,
+si se observa el valor de predicción positivo
+<code>Pos Pred Value</code> en ambos modelos, se puede dar cuenta que el
+modelo que mejor valor de predicción de la clase positiva es
+ScoreLogisticoA, con 63%; mientras que ScoreLogisticoA tiene un
+<code>Pos Pred Value</code> de 49%.</p>
+<p>Así, el modelo que mejor predice el incumplimiento es el modelo
 ScoreLogisticoA.</p>
 </div>
 </div>
